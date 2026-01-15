@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [['$','$'], ['\\(','\\)']]}});</script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS": {"availableFonts":["TeX"],"scale": 150}});</script>
+
+<style>
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback";
+	font-size: 14px;
+	padding: 0 12px;
+	line-height: 22px;
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	color: #4080D0;
+	text-decoration: none;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+h1 code,
+h2 code,
+h3 code,
+h4 code,
+h5 code,
+h6 code {
+	font-size: inherit;
+	line-height: auto;
+}
+
+a:hover {
+	color: #4080D0;
+	text-decoration: underline;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left: 5px solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 14px;
+	line-height: 19px;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+.mac code {
+	font-size: 12px;
+	line-height: 18px;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+/** Theming */
+
+.vscode-light,
+.vscode-light pre code {
+	color: rgb(30, 30, 30);
+}
+
+.vscode-dark,
+.vscode-dark pre code {
+	color: #DDD;
+}
+
+.vscode-high-contrast,
+.vscode-high-contrast pre code {
+	color: white;
+}
+
+.vscode-light code {
+	color: #A31515;
+}
+
+.vscode-dark code {
+	color: #D7BA7D;
+}
+
+.vscode-light pre:not(.hljs),
+.vscode-light code > div {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre:not(.hljs),
+.vscode-dark code > div {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre:not(.hljs),
+.vscode-high-contrast code > div {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+.vscode-light blockquote,
+.vscode-dark blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.vscode-high-contrast blockquote {
+	background: transparent;
+	border-color: #fff;
+}
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+</style>
+
+</head>
+<body>
+<h1 id="fichiers-de-stockage-audio">Fichiers de stockage audio</h1>
+<h2 id="types-de-fichiers">Types de fichiers</h2>
+<p>On distingue deux grands types de fichiers audio : avec ou sans compression.</p>
+<h3 id="sans-compression">Sans compression</h3>
+<ol>
+<li>WAVE : format PCM, conteneur générique, le plus répandu. Little endianness.</li>
+<li>AIFF : Format développé par Apple, peu utilisé (sauf sur OSX), avec la feature de pouvoir insérer des points de bouclage &amp; des notes d'échantillons (pour des raisons qui datent, l'utilisation avec des sampleurs etc...). Big endianness.</li>
+</ol>
+<p>Le PCM (Pulse code modulation) désigne une manière de stocker les échantillons audio les uns après les autres, garantissant le stockage de tous les échantillons d'un signal.
+Si cela semble évident et trivial, c'est une caractéristique des formats non-compressés.</p>
+<h3 id="avec-compression">Avec compression</h3>
+<ol>
+<li>MP3 : le Mpeg - audio layer 3 : format compressé avec perte. Offre la possibilité de spécifier un bitrate constant (Constant Bit Rate), 64kb/s, 128, 256 etc, mais aussi de laisser l'algorithme déterminer un bitrate évolutif (VBR Variable Bit Rate ou ABR Average Bit Rate). Ce format est destructif. Facile à encapsuler dans du MPEGG 4.</li>
+<li>FLAC : Free Lossless Audio Codec : Format compressé sans perte, taux de compression d'environs 50%.</li>
+</ol>
+<p>Il existe beaucoup d'autres formats.</p>
+<h2 id="quelques-librairies">Quelques librairies</h2>
+<p>La grande librairie de parsing / sérialisation de fichiers audio est libsndfile (API C &amp; C++) :</p>
+<ul>
+<li><a href="https://github.com/libsndfile/libsndfile">Github</a></li>
+<li><a href="https://libsndfile.github.io/libsndfile/">Documentation</a>
+Elle supporte les formats WAV, AIFF, Raw PCM sans header, IRCAM SF, FLAC et plein d'autres formats (de niche, ou obsolètes pour la plupart).</li>
+</ul>
+<p>Pour le MP3, la compression est un peu plus complexe et spécifique, on utilise Lame :</p>
+<ul>
+<li><a href="https://lame.sourceforge.io/">Documentation</a></li>
+</ul>
+<p>Ce sont les deux grandes références du C/C++. Il n'existe pas d'équivalent connu &amp; à ce niveau.</p>
+<h2 id="le-format-wave">Le format WAVE</h2>
+<p>Le WAVE (.wav) est le grand gagnant des formats audio non-compressés.
+Ses caractéristiques :</p>
+<ul>
+<li>PCM</li>
+<li>Support PCM int &amp; float</li>
+<li>Résolution binaire de 8 à 32 bits</li>
+<li>Multicanal</li>
+<li>4Go max (taille des 4 bytes utilisés pour définir la taille)</li>
+</ul>
+<p>Il est composé en trois parties :</p>
+<ul>
+<li>Un header
+<ul>
+<li>4B : 'RIFF'</li>
+<li>4B : File size</li>
+<li>4B : 'WAVE'</li>
+</ul>
+</li>
+<li>Un format
+<ul>
+<li>4B : 'fmt '</li>
+<li>4B : Format size</li>
+<li>2B : Format tag : 0x0001 pour PCM entier, 0x0003 pour PCM flottant (les autres sont des formats compressés et/ou obsolètes de windows WAVE_FORMAT_EXTENSIBLE)</li>
+<li>2B : Number of channels</li>
+<li>4B : Sample rate</li>
+<li>4B : Data Rate (number of bytes / sec)</li>
+<li>2B : Size in bytes of one audio frame (1 sample for each channel)</li>
+<li>2B : Bits per sample</li>
+<li>Optionnal (we won't use it : extension for WAVE_FORMAT_EXTENSIBLE)</li>
+</ul>
+</li>
+<li>Un nombre indéfini de blocs de données
+<ul>
+<li>Chaque bloc a la forme suivante
+<ul>
+<li>4B : Data name (for audio data, it will be 'data')</li>
+<li>4B : Size of data in bytes</li>
+<li>NB : Data (interleaved for audio)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><a href="https://web.archive.org/web/20100325183246/http://www-mmsp.ece.mcgill.ca/Documents/AudioFormats/WAVE/WAVE.html">Specification WAVE</a></p>
+<p>Attention, sur cette spécification, certaines informations sont datées (concernant le WAVE_FORMAT_EXTENSIBLE). Il n'est pas nécessaire de l'utiliser pour les fichiers de plus de 2 canaux, ni pour les données de plus de 16 bits/sample.
+En fait, on ne l'utilise généralement pas, sauf dans certains cas spécifiques (communication avec des appareils de capture audio spécifiques par exemple).</p>
+<h2 id="exercice">Exercice</h2>
+<ol>
+<li>
+<p>Réaliser un parser de fichier WAVE</p>
+<ul>
+<li>Avec méthodes <code>seek(int num_frame)</code> et <code>read(char *data, int num_frames)</code> (les signatures sont données en exemple, vous êtes libres de ce point de vue)</li>
+<li>Possibilité de convertir les données (si le fichier contient des PCM16 bits, et que le client veut du float 32 bits normalisé par exemple)</li>
+</ul>
+</li>
+<li>
+<p>Réaliser un sérializer de fichier WAVE</p>
+<ul>
+<li>Peut écrire des fichiers audio à partir d'une spécification de paramètres (nombre de canaux, fréquence d'échantillonnage, format audio, résolution binaire etc) et de données audio fournies par l'utilisateur</li>
+<li>Méthodes <code>write(char* data, size_t num_frames)</code> (exemple)</li>
+<li>Optionnel : méthode <code>write_meta(std::string name, size_t size_bytes, void* data)</code> pour ajouter des métadonnées dans un bloc de données supplémentaire</li>
+</ul>
+</li>
+<li>
+<p>Réaliser un outil en ligne de commande pour transformer des fichiers audio</p>
+<ul>
+<li>Couper un fichier (spécifier le début et la fin)</li>
+<li>Modifier l'amplitude</li>
+<li>Appliquer une évolution progressive du volume (courbe/enveloppe d'amplitude)</li>
+<li>Modifier l'encodage : int &lt;&gt; float &amp; modification de résolution binaire</li>
+<li>Gestionnaire de panoramique (stéréo gauche/droite)</li>
+<li>Autre, libre...</li>
+</ul>
+</li>
+</ol>
+
+</body>
+</html>

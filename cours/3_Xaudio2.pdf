@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [['$','$'], ['\\(','\\)']]}});</script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS": {"availableFonts":["TeX"],"scale": 150}});</script>
+
+<style>
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: "Segoe WPC", "Segoe UI", "SFUIText-Light", "HelveticaNeue-Light", sans-serif, "Droid Sans Fallback";
+	font-size: 14px;
+	padding: 0 12px;
+	line-height: 22px;
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	color: #4080D0;
+	text-decoration: none;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+h1 code,
+h2 code,
+h3 code,
+h4 code,
+h5 code,
+h6 code {
+	font-size: inherit;
+	line-height: auto;
+}
+
+a:hover {
+	color: #4080D0;
+	text-decoration: underline;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left: 5px solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 14px;
+	line-height: 19px;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+.mac code {
+	font-size: 12px;
+	line-height: 18px;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+/** Theming */
+
+.vscode-light,
+.vscode-light pre code {
+	color: rgb(30, 30, 30);
+}
+
+.vscode-dark,
+.vscode-dark pre code {
+	color: #DDD;
+}
+
+.vscode-high-contrast,
+.vscode-high-contrast pre code {
+	color: white;
+}
+
+.vscode-light code {
+	color: #A31515;
+}
+
+.vscode-dark code {
+	color: #D7BA7D;
+}
+
+.vscode-light pre:not(.hljs),
+.vscode-light code > div {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre:not(.hljs),
+.vscode-dark code > div {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre:not(.hljs),
+.vscode-high-contrast code > div {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+.vscode-light blockquote,
+.vscode-dark blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.vscode-high-contrast blockquote {
+	background: transparent;
+	border-color: #fff;
+}
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+</style>
+
+</head>
+<body>
+<h1 id="xaudio2---realtime-audio-playback">XAudio2 - Realtime Audio Playback</h1>
+<h2 id="rappel-de-ce-%C3%A0-quoi-ressemble-un-playback-audio-bas-niveau">Rappel de ce à quoi ressemble un playback audio bas niveau</h2>
+<pre class="hljs"><code><div><span class="hljs-comment">// Cette fonction est appelée à chaque fois que le driver a besoin de n échantillons en sortie</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">audio_callback</span><span class="hljs-params">(<span class="hljs-keyword">float</span> **in, <span class="hljs-keyword">float</span> **out, <span class="hljs-keyword">size_t</span> n_samples, <span class="hljs-keyword">uint8_t</span> in_channels, <span class="hljs-keyword">uint8_t</span> out_channels)</span>
+</span>{
+    <span class="hljs-comment">// Débrouille toi avec les échantillons entrant</span>
+    <span class="hljs-comment">// Ecris ce que tu veux en sortie</span>
+}
+</div></code></pre>
+<p>Ceci n'existe pas dans XAudio2.</p>
+<h2 id="xaudio2-un-syst%C3%A8me-de-graph-audio">XAudio2 : un système de Graph audio</h2>
+<p><img src="file:///c:/Users/johan/Documents/git/gtech3_audio/cours/assets/xaudio.png" alt="Xaudio"></p>
+<p>Assez loin du bas niveau, XAudio2 est une API audio conçue comme un système de graph/node.
+Un système de graph peut être vu comme une chaîne de traitements audio complexe.</p>
+<p><img src="file:///c:/Users/johan/Documents/git/gtech3_audio/cours/assets/graph.png" alt="Graph"></p>
+<p>Les features et concepts :</p>
+<ul>
+<li>SourceVoice et CaptureVoice : source sonore (noeud de sortie) et capture sonore (noeud d'entrée)</li>
+<li>Effets audio</li>
+<li>Mixage &gt; combiner plusieurs &quot;sons&quot; dans un flux unique</li>
+<li>Support multicanal</li>
+<li>Multirate (plusieurs graphs avec des sample rate différents)</li>
+<li>Non-bloquant : il gère les threads à votre place</li>
+</ul>
+<p>Développé avec comme principale target le jeu vidéo, ça semble adapté pour ce module !</p>
+<p>Le graph XAudio2 :
+<img src="file:///c:/Users/johan/Documents/git/gtech3_audio/cours/assets/xaudio2-audio-graph.png" alt="GraphXaudio"></p>
+<p>Le graph peut-être contrôlé en temps-réel, pendant qu'il est en cours d'exécution : création et destruction de voix, routing, modification des effets et du graph, changer des paramètres...</p>
+<h2 id="les-m%C3%A9canismes-de-base-xaudio2">Les mécanismes de base XAudio2</h2>
+<p>Les briques de base :</p>
+<ul>
+<li><code>IXAudio2SourceVoice</code> : un son</li>
+<li><code>IXAudio2MasteringVoice</code> : le &quot;mastering&quot; (la sortie audio)</li>
+</ul>
+<p>Pour simplement lire un buffer audio, voici le code :</p>
+<pre class="hljs"><code><div>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;Windows.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;xaudio2.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;cmath&gt;</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// Initialisation COM</span>
+    HRESULT hr = CoInitializeEx(<span class="hljs-literal">nullptr</span>, COINIT_MULTITHREADED);
+    <span class="hljs-keyword">if</span> (FAILED(hr)) <span class="hljs-keyword">return</span> hr;
+
+    <span class="hljs-comment">// On créé l'instance de XAudio2 </span>
+    IXAudio2* xaudio2 = <span class="hljs-literal">nullptr</span>;
+    hr = XAudio2Create(&amp;xaudio2, <span class="hljs-number">0</span>, XAUDIO2_DEFAULT_PROCESSOR);
+    <span class="hljs-keyword">if</span> (FAILED(hr)) <span class="hljs-keyword">return</span> hr;
+
+    <span class="hljs-comment">// On créé la voix master : elle start Xaudio2 automatiquement (on n'appelle pas xaudio2-&gt;Start())</span>
+    IXAudio2MasteringVoice* master_voice = <span class="hljs-literal">nullptr</span>;
+    hr = xaudio2-&gt;CreateMasteringVoice(&amp;master_voice);
+    <span class="hljs-keyword">if</span> (FAILED(hr)) <span class="hljs-keyword">return</span> hr;
+
+    <span class="hljs-comment">// On créé un WAVEFORMATEX (similaire à la structure d'un fichier WAVE, qui inclut en puissance le Broadcast extension format)</span>
+    <span class="hljs-comment">// Attention WAVEFORMAT (sans EX) est XAUDIO1 (non rétrocompatible)</span>
+    WAVEFORMATEX wfx = {};
+    wfx.wFormatTag = WAVE_FORMAT_IEEE_FLOAT;
+    wfx.nChannels = <span class="hljs-number">1</span>;
+    wfx.nSamplesPerSec = <span class="hljs-number">48000</span>;
+    wfx.wBitsPerSample = <span class="hljs-number">32</span>;
+    wfx.nBlockAlign = wfx.nChannels * (wfx.wBitsPerSample / <span class="hljs-number">8</span>);
+    wfx.nAvgBytesPerSec = wfx.nSamplesPerSec * wfx.nBlockAlign;
+
+    <span class="hljs-comment">// Source voice = un lecteur de buffer audio / playback</span>
+    IXAudio2SourceVoice* source_voice = <span class="hljs-literal">nullptr</span>;
+    hr = xaudio2-&gt;CreateSourceVoice(&amp;source_voice, &amp;wfx);
+    <span class="hljs-keyword">if</span> (FAILED(hr)) <span class="hljs-keyword">return</span> hr;
+
+    <span class="hljs-comment">// Oscillateur sinusoidal </span>
+    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">float</span>&gt; audio_buffer(wfx.nSamplesPerSec * <span class="hljs-number">5</span>);
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">float</span> freq = <span class="hljs-number">440.0f</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">size_t</span> i = <span class="hljs-number">0</span>; i &lt; audio_buffer.size(); ++i) {
+        audio_buffer[i] = sinf(<span class="hljs-number">2.0f</span> * <span class="hljs-number">3.14159265f</span> * freq * (<span class="hljs-keyword">float</span>)i / wfx.nSamplesPerSec);
+    }
+
+    <span class="hljs-comment">// La structure buffer XAudio2 : on lui donne notre buffer + quelques infos</span>
+    XAUDIO2_BUFFER buf = {};
+    buf.pAudioData = <span class="hljs-keyword">reinterpret_cast</span>&lt;BYTE*&gt;(audio_buffer.data());
+    buf.AudioBytes = audio_buffer.size() * <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">float</span>);
+    buf.Flags = XAUDIO2_END_OF_STREAM;
+
+    <span class="hljs-comment">// On donne le buffer à la source </span>
+    source_voice-&gt;SubmitSourceBuffer(&amp;buf);
+
+    <span class="hljs-comment">// Et c'est parti ! </span>
+    source_voice-&gt;Start();
+
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+        XAUDIO2_VOICE_STATE state;
+        source_voice-&gt;GetState(&amp;state);
+        <span class="hljs-keyword">if</span> (state.BuffersQueued == <span class="hljs-number">0</span>) <span class="hljs-keyword">break</span>;
+        Sleep(<span class="hljs-number">100</span>);
+    }
+
+    source_voice-&gt;DestroyVoice();
+    master_voice-&gt;DestroyVoice();
+    xaudio2-&gt;Release();
+    CoUninitialize();
+}
+
+
+</div></code></pre>
+<p>Un exemple avec une entrée audio :</p>
+<pre class="hljs"><code><div>
+</div></code></pre>
+<p>La structure parent et toutes les fonctions utilitaires : <a href="https://learn.microsoft.com/en-us/windows/win32/api/xaudio2/">IXAudio2Voice</a></p>
+<h2 id="callbacks">Callbacks</h2>
+<p>Les callbacks audio dans XAudio2, non-conformes aux pratiques standard de l'audionumérique, ne permettent pas de récupérer des informations particulièrement intéressantes (comme de l'audio par exemple).
+Elles pourraient, éventuellement, permettre de simuler un callback audio classique comme montré en début de ce chapitre 3. Ce ne serait cependant pas vraiment adapté au fonctionnement interne de XAudio2.</p>
+<pre class="hljs"><code><div><span class="hljs-comment">// Interface </span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">my_voice_callback</span> :</span> <span class="hljs-keyword">public</span> IXAudio2VoiceCallback
+{
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">OnBufferStart</span><span class="hljs-params">(<span class="hljs-keyword">void</span> *pBufferContext)</span> override</span>; <span class="hljs-comment">// Appelé quand une voix s'apprête à lire un buffer </span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">OnBufferEnd</span><span class="hljs-params">(<span class="hljs-keyword">void</span> *pBufferContext)</span> override</span>; <span class="hljs-comment">// Appelé quand une voix finit la lecture d'un buffer</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">OnStreamEnd</span><span class="hljs-params">()</span> override</span>; <span class="hljs-comment">// Quand une voix finit un buffer XAUDIO2_BUFFER dont le XAUDIO2_END_OF_STREAM a été set </span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">OnLoopEnd</span><span class="hljs-params">(<span class="hljs-keyword">void</span> *pBufferContext)</span> override</span>; <span class="hljs-comment">// Quand une voix atteint le point de fin de boucle </span>
+    
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">OnVoiceError</span><span class="hljs-params">(<span class="hljs-keyword">void</span> *pBufferContext, HRESULT error)</span> override</span>; <span class="hljs-comment">// Une erreur ? </span>
+
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">OnProcessingPassStart</span><span class="hljs-params">(UINT32 BytesRequired)</span> override</span>; <span class="hljs-comment">// Juste avant que XAudio lise les data du buffer d'une voix  </span>
+    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">OnProcessingPassEnd</span><span class="hljs-params">()</span> override</span>; <span class="hljs-comment">// Après un "processing pass" (?)</span>
+};
+
+</div></code></pre>
+<h2 id="m%C3%A9canismes-de-graph">Mécanismes de graph</h2>
+<p>Le mécanisme de graph permet de router des voix (sources ou captures) vers des voix de submix. Ca peut avoir plusieurs intérêt :</p>
+<ul>
+<li>Mixer des voix avant le mastering final ()</li>
+<li>Appliquer un effet à un ensemble de voix (en une seule manipulation / minimisant le coût processeur)</li>
+<li>Conversion de format avant le mastering</li>
+</ul>
+<p>Le submix est le mécanisme principal du routing &quot;passthrough&quot;.
+On peut évidemment router des submix dans d'autres submix (tant que leur ProcessingStage est identique).</p>
+<p>XAUDIO2_VOICE_SENDS</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">XAUDIO2_VOICE_SENDS</span> {</span>
+  UINT32                  SendCount; <span class="hljs-comment">// Le nombre d'envois </span>
+  XAUDIO2_SEND_DESCRIPTOR *pSends; <span class="hljs-comment">// Les pointeurs décrivant les envois </span>
+} XAUDIO2_VOICE_SENDS;
+
+<span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">XAUDIO2_SEND_DESCRIPTOR</span> {</span>
+  UINT32        Flags;  <span class="hljs-comment">// 0 ou XAUDIO2_SEND_USEFILTER</span>
+  IXAudio2Voice *pOutputVoice; <span class="hljs-comment">// Voix de sortie </span>
+} XAUDIO2_SEND_DESCRIPTOR;
+</div></code></pre>
+<p>Ce qu'on passe comme &quot;voix&quot; de send, c'est une SubmixVoice, définie par :</p>
+<pre class="hljs"><code><div><span class="hljs-function">HRESULT <span class="hljs-title">CreateSubmixVoice</span><span class="hljs-params">(
+  IXAudio2SubmixVoice        **ppSubmixVoice, 
+  UINT32                     InputChannels, <span class="hljs-comment">// nombre d'entrées </span>
+  UINT32                     InputSampleRate, <span class="hljs-comment">// Sample rate d'entrée ! </span>
+  UINT32                     Flags, <span class="hljs-comment">// Comme SEND DESCRIPTOR </span>
+  UINT32                     ProcessingStage, <span class="hljs-comment">// Une sorte de "priorité" des voix submix entre-elles </span>
+  <span class="hljs-keyword">const</span> XAUDIO2_VOICE_SENDS  *pSendList,
+  <span class="hljs-keyword">const</span> XAUDIO2_EFFECT_CHAIN *pEffectChain
+)</span></span>;
+
+<span class="hljs-comment">// Pour passer les voix de sortie, on utilise : </span>
+<span class="hljs-function">HRESULT <span class="hljs-title">SetOutputVoices</span><span class="hljs-params">(
+  [in] <span class="hljs-keyword">const</span> XAUDIO2_VOICE_SENDS *pSendList
+)</span></span>;
+</div></code></pre>
+<h2 id="les-effets-effects-chains">Les Effets &amp; effects chains</h2>
+<p>Les effets sont l'autre modalité du &quot;passthrough&quot; dans XAudio2.
+Mais cette fois, et pour la première fois depuis qu'on a commencé à regarder XAudio2 : On peut manipuler les buffers entrant, et fournir un buffer en sortie (cf. Le callback audio de base).</p>
+<p>XAudio nous fournit une réverb, et un getter de volume.
+<a href="https://learn.microsoft.com/en-us/windows/win32/xaudio2/xaudio2-audio-effects">Effect &amp; chains</a></p>
+<p>XAPOFX nous fournit d'autres choses, soit 4 effets (echo, EQ, Limiter, Reverb)
+<a href="https://learn.microsoft.com/en-us/windows/win32/xaudio2/xapofx-overview">XAPO Effects</a></p>
+<p>Les effets doivent être instanciés, puis passés à une structure descripteur, puis dans une effect chain.
+La effect chain est ensuite passée à une voix.</p>
+<pre class="hljs"><code><div>    <span class="hljs-comment">//IUnknown* myecho;</span>
+    IUnknown *effect;
+    HRESULT hr = XAudio2CreateReverb(&amp;effect, <span class="hljs-number">0</span>);
+
+    XAUDIO2_EFFECT_DESCRIPTOR descriptor;
+    descriptor.InitialState = <span class="hljs-literal">true</span>;
+    descriptor.OutputChannels = <span class="hljs-number">2</span>;
+    descriptor.pEffect = myeffect;
+
+    XAUDIO2_EFFECT_CHAIN chain;
+    chain.EffectCount = <span class="hljs-number">1</span>;
+    chain.pEffectDescriptors = &amp;descriptor;
+
+    <span class="hljs-comment">// Plus tard, avant d'appeler Start : </span>
+    source_voice-&gt;SetEffectChain(&amp;chain);
+    source_voice-&gt;EnableEffect(<span class="hljs-number">0</span>); <span class="hljs-comment">// 0 est l'index de l'effet dans la chaîne, pas nécessaire puisque son initialstate est true </span>
+
+    <span class="hljs-comment">// Puis à la fin de la performance audio </span>
+    myeffect-&gt;Release(); <span class="hljs-comment">// Pour appeler le destructeur </span>
+</div></code></pre>
+<h3 id="custom-effet-xapo-xaudio2-processing-object">Custom effet : XAPO Xaudio2 Processing Object</h3>
+<p><a href="https://learn.microsoft.com/en-us/windows/win32/xaudio2/xapo-overview">XAPO</a>
+<a href="https://github.com/MicrosoftDocs/win32/blob/docs/desktop-src/xaudio2/how-to--create-an-xapo.md">Doc Git</a></p>
+<pre class="hljs"><code><div>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> once</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;xaudio2.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;xapo.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;xapobase.h&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;cassert&gt;</span></span>
+
+<span class="hljs-comment">// Il est nécessaire d'importer XAPOBase.lib</span>
+<span class="hljs-meta">#<span class="hljs-meta-keyword">pragma</span> comment(lib, <span class="hljs-meta-string">"XAPOBase.lib"</span>)</span>
+
+<span class="hljs-comment">// On hérite de CXAPOBase, et on doit avoir un uid unique </span>
+<span class="hljs-comment">// Il existe un outil dans Visual Studio pour en générer (Create GUID)</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> __<span class="hljs-title">declspec</span>(<span class="hljs-title">uuid</span>("268<span class="hljs-title">EE84D</span>-<span class="hljs-title">F9BF</span>-4<span class="hljs-title">DEE</span>-92<span class="hljs-title">E3</span>-47<span class="hljs-title">B3463F7028</span>")) <span class="hljs-title">echo</span> :</span> <span class="hljs-keyword">public</span> CXAPOBase
+{
+
+    <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">echo_t</span>
+    {</span>
+        <span class="hljs-keyword">size_t</span> size = <span class="hljs-number">0</span>; 
+        <span class="hljs-keyword">size_t</span> read_pos = <span class="hljs-number">1</span>, write_pos = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">float</span>* buffer = <span class="hljs-literal">nullptr</span>;
+    };
+
+    WAVEFORMATEX fmt;
+    <span class="hljs-keyword">echo_t</span> echoes[<span class="hljs-number">2</span>];
+
+    <span class="hljs-comment">// Feedback [0.0, 1.0] taux de réinjection de l'écho (combien de temps ça va se répéter)</span>
+    <span class="hljs-comment">// Mix [0.0, 1.0] mixage entre signal normal et signal traité (0 = son normal, 1 = 100% son traité)</span>
+    <span class="hljs-keyword">float</span> feedback, mix; 
+    
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-comment">// Cette structure définit les propriétés de l'effet </span>
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">constexpr</span> XAPO_REGISTRATION_PROPERTIES EchoEffectProperties{
+        __uuidof(echo), <span class="hljs-comment">// GUID unique</span>
+        <span class="hljs-string">L"echo"</span>,        <span class="hljs-comment">// Nom</span>
+        <span class="hljs-string">L"Custom echo"</span>, <span class="hljs-comment">// Description</span>
+        <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-comment">// versions</span>
+        XAPO_FLAG_FRAMERATE_MUST_MATCH, <span class="hljs-comment">// Un flag</span>
+        <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-comment">// nombre min max d'entrées </span>
+        <span class="hljs-number">1</span>, <span class="hljs-number">2</span>,  <span class="hljs-comment">// Nombre min max de sorties</span>
+    };
+
+    echo() : CXAPOBase(&amp;EchoEffectProperties)
+        , feedback(<span class="hljs-number">0.9f</span>)
+        , mix(<span class="hljs-number">0.5f</span>)
+    {}
+
+    ~echo()
+    {}
+
+    <span class="hljs-comment">// Optionnel - vérification </span>
+    STDMETHOD(IsInputFormatSupported)(
+        <span class="hljs-keyword">const</span> WAVEFORMATEX* pOutputFormat,
+        <span class="hljs-keyword">const</span> WAVEFORMATEX* pRequestedInputFormat,
+        WAVEFORMATEX** ppSupportedInputFormat) override
+    {
+        <span class="hljs-comment">// Accept 32-bit float, stereo, matching sample rate</span>
+        <span class="hljs-keyword">if</span> (pRequestedInputFormat-&gt;wFormatTag == WAVE_FORMAT_IEEE_FLOAT &amp;&amp;
+            pRequestedInputFormat-&gt;nChannels == <span class="hljs-number">2</span> &amp;&amp;
+            (!pOutputFormat || pRequestedInputFormat-&gt;nSamplesPerSec == pOutputFormat-&gt;nSamplesPerSec))
+        {
+            *ppSupportedInputFormat = <span class="hljs-keyword">const_cast</span>&lt;WAVEFORMATEX*&gt;(pRequestedInputFormat);
+            <span class="hljs-keyword">return</span> S_OK;
+        }
+        <span class="hljs-keyword">return</span> E_INVALIDARG;
+    }
+
+    <span class="hljs-comment">// Optionnel - vérification </span>
+    STDMETHOD(IsOutputFormatSupported)(
+        <span class="hljs-keyword">const</span> WAVEFORMATEX* pInputFormat,
+        <span class="hljs-keyword">const</span> WAVEFORMATEX* pRequestedOutputFormat,
+        WAVEFORMATEX** ppSupportedOutputFormat) override
+    {
+        <span class="hljs-keyword">if</span> (pRequestedOutputFormat-&gt;wFormatTag == WAVE_FORMAT_IEEE_FLOAT &amp;&amp;
+            pRequestedOutputFormat-&gt;nChannels == <span class="hljs-number">2</span> &amp;&amp;
+            pRequestedOutputFormat-&gt;nSamplesPerSec == pInputFormat-&gt;nSamplesPerSec)
+        {
+            *ppSupportedOutputFormat = <span class="hljs-keyword">const_cast</span>&lt;WAVEFORMATEX*&gt;(pRequestedOutputFormat);
+            <span class="hljs-keyword">return</span> S_OK;
+        }
+        <span class="hljs-keyword">return</span> E_INVALIDARG;
+    }
+
+    <span class="hljs-comment">// Nécessaire : initialisation </span>
+    STDMETHOD(LockForProcess) (UINT32 InputLockedParameterCount,
+        <span class="hljs-keyword">const</span> XAPO_LOCKFORPROCESS_BUFFER_PARAMETERS* pInputLockedParameters,
+        UINT32 OutputLockedParameterCount,
+        <span class="hljs-keyword">const</span> XAPO_LOCKFORPROCESS_BUFFER_PARAMETERS* pOutputLockedParameters)
+    {
+        assert(!IsLocked());
+        assert(InputLockedParameterCount == <span class="hljs-number">1</span>);
+        assert(OutputLockedParameterCount == <span class="hljs-number">1</span>);
+        assert(pInputLockedParameters != <span class="hljs-literal">NULL</span>);
+        assert(pOutputLockedParameters != <span class="hljs-literal">NULL</span>);
+        assert(pInputLockedParameters[<span class="hljs-number">0</span>].pFormat != <span class="hljs-literal">NULL</span>);
+        assert(pOutputLockedParameters[<span class="hljs-number">0</span>].pFormat != <span class="hljs-literal">NULL</span>);
+
+        fmt = *pInputLockedParameters[<span class="hljs-number">0</span>].pFormat;
+        <span class="hljs-comment">// buffer d'écho de 1/4 de seconde </span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">size_t</span> i = <span class="hljs-number">0</span>; i &lt; fmt.nChannels; ++i)
+        {
+            echoes[i].size = fmt.nSamplesPerSec / <span class="hljs-number">4</span>;
+            echoes[i].buffer = (<span class="hljs-keyword">float</span>*)<span class="hljs-built_in">std</span>::<span class="hljs-built_in">calloc</span>(fmt.nSamplesPerSec / <span class="hljs-number">4</span>, <span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">float</span>));
+        }
+
+        <span class="hljs-keyword">return</span> CXAPOBase::LockForProcess(
+            InputLockedParameterCount,
+            pInputLockedParameters,
+            OutputLockedParameterCount,
+            pOutputLockedParameters
+        );
+    }
+
+    <span class="hljs-comment">// Nécessaire : fonction appelée pour calculer les échantillons de sortie à partir de ceux en entrée </span>
+    STDMETHOD_(<span class="hljs-keyword">void</span>, Process)(UINT32 InputProcessParameterCount,
+        <span class="hljs-keyword">const</span> XAPO_PROCESS_BUFFER_PARAMETERS* pInputProcessParameters,
+        UINT32 OutputProcessParameterCount,
+        XAPO_PROCESS_BUFFER_PARAMETERS* pOutputProcessParameters,
+        BOOL IsEnabled)
+    {
+        assert(IsLocked());
+        assert(InputProcessParameterCount == <span class="hljs-number">1</span>);
+        assert(OutputProcessParameterCount == <span class="hljs-number">1</span>);
+        assert(<span class="hljs-literal">NULL</span> != pInputProcessParameters);
+        assert(<span class="hljs-literal">NULL</span> != pOutputProcessParameters);
+
+        XAPO_BUFFER_FLAGS inFlags = pInputProcessParameters[<span class="hljs-number">0</span>].BufferFlags;
+        XAPO_BUFFER_FLAGS outFlags = pOutputProcessParameters[<span class="hljs-number">0</span>].BufferFlags;
+
+        <span class="hljs-comment">// assert buffer flags are legitimate</span>
+        assert(inFlags == XAPO_BUFFER_VALID || inFlags == XAPO_BUFFER_SILENT);
+        assert(outFlags == XAPO_BUFFER_VALID || outFlags == XAPO_BUFFER_SILENT);
+
+        <span class="hljs-comment">// check input APO_BUFFER_FLAGS</span>
+        <span class="hljs-keyword">switch</span> (inFlags)
+        {
+        <span class="hljs-keyword">case</span> XAPO_BUFFER_VALID:
+        {
+            <span class="hljs-keyword">float</span>* pvSrc = (<span class="hljs-keyword">float</span>*)pInputProcessParameters[<span class="hljs-number">0</span>].pBuffer;
+            assert(pvSrc != <span class="hljs-literal">NULL</span>);
+
+            <span class="hljs-keyword">float</span>* pvDst = (<span class="hljs-keyword">float</span>*)pOutputProcessParameters[<span class="hljs-number">0</span>].pBuffer;
+            assert(pvDst != <span class="hljs-literal">NULL</span>);
+
+            <span class="hljs-comment">// Audio loop </span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">size_t</span> ch = <span class="hljs-number">0</span>; ch &lt; fmt.nChannels; ++ch)
+            {
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">size_t</span> n = <span class="hljs-number">0</span>; n &lt; pInputProcessParameters[<span class="hljs-number">0</span>].ValidFrameCount; ++n)
+                {
+                    <span class="hljs-keyword">size_t</span> index = n * fmt.nChannels + ch;
+                    pvDst[index] = (pvSrc[index] * mix) + (echoes[ch].buffer[echoes[ch].read_pos] * (<span class="hljs-number">1.0f</span> - mix) );
+                    echoes[ch].read_pos = (echoes[ch].read_pos + <span class="hljs-number">1</span>) % echoes[ch].size;
+                    echoes[ch].buffer[echoes[ch].write_pos] = (echoes[ch].buffer[echoes[ch].write_pos] * feedback) + pvSrc[index] ;
+                    echoes[ch].write_pos = (echoes[ch].write_pos + <span class="hljs-number">1</span>) % echoes[ch].size;
+                }
+            }
+
+            <span class="hljs-keyword">break</span>;
+        }
+
+        <span class="hljs-keyword">case</span> XAPO_BUFFER_SILENT:
+        {
+            <span class="hljs-comment">// All that needs to be done for this case is setting the</span>
+            <span class="hljs-comment">// output buffer flag to XAPO_BUFFER_SILENT which is done below.</span>
+            <span class="hljs-keyword">break</span>;
+        }
+
+        }
+
+        <span class="hljs-comment">// set destination valid frame count, and buffer flags</span>
+        pOutputProcessParameters[<span class="hljs-number">0</span>].ValidFrameCount = pInputProcessParameters[<span class="hljs-number">0</span>].ValidFrameCount; <span class="hljs-comment">// set destination frame count same as source</span>
+        pOutputProcessParameters[<span class="hljs-number">0</span>].BufferFlags = pInputProcessParameters[<span class="hljs-number">0</span>].BufferFlags;     <span class="hljs-comment">// set destination buffer flags same as source</span>
+    }
+};
+
+</div></code></pre>
+<h1 id="exercice">Exercice :</h1>
+<p>Réaliser un player de fichiers WAVE (parsés par vos soins) en ligne de commande :</p>
+<ol>
+<li>Parser avec votre parser, puis jouer l'audio avec XAudio2</li>
+<li>Jouer à partir d'un moment dans le fichier (exprimé en frames, ms ou secondes)</li>
+<li>Ajouter des effets =)</li>
+<li>Créer un effet à vous (Custom effect)</li>
+</ol>
+
+</body>
+</html>

@@ -14,9 +14,8 @@ Si cela semble évident et trivial, c'est une caractéristique des formats non-c
 
 ### Avec compression 
 
-1. MP3 : le Mpeg - audio layer 3 : format compressé avec perte. Offre la possibilité de spécifier un bitrate constant (Constant Bit Rate), 64kb/s, 128, 256 etc, mais aussi de laisser l'algorithme déterminer un bitrate évolutif (VBR Variable Bit Rate ou ABR Average Bit Rate). Ce format est destructif. Facile à encapsuler dans du MPEGG 4.
+1. MP3 : le Mpeg - audio layer 3 : format compressé avec perte. Offre la possibilité de spécifier un bitrate constant (Constant Bit Rate), 64kb/s, 128, 256 etc, mais aussi de laisser l'algorithme déterminer un bitrate évolutif (VBR Variable Bit Rate ou ABR Average Bit Rate). Ce format est destructif. Facile à encapsuler dans du MPEGG 4. Intéressant de noter que les principes d'origine du MP3 datent du début du XXème siècle, lorsque les laboratoires BELL oeuvraient à réduire le coût de la bande passante pour les télécommunications. Il s'agit d'un gros travail de psychoacoustique : qu'est-ce qui, dans un signal vocal, est vraiment nécessaire pour qu'on puisse comprendre l'information ? 
 2. FLAC : Free Lossless Audio Codec : Format compressé sans perte, taux de compression d'environs 50%. 
-
 
 Il existe beaucoup d'autres formats. 
 
@@ -85,6 +84,7 @@ En fait, on ne l'utilise généralement pas, sauf dans certains cas spécifiques
    - Appliquer une évolution progressive du volume (courbe/enveloppe d'amplitude)
    - Modifier l'encodage : int <> float & modification de résolution binaire 
    - Gestionnaire de panoramique (stéréo gauche/droite)
+   - Modulation d'amplitude par oscillateur à basse fréquence (LFO sinusoidal, PWM)
    - Autre, libre...
 
 
