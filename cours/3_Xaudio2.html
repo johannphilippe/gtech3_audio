@@ -571,6 +571,7 @@ La effect chain est ensuite passée à une voix.</p>
     <span class="hljs-comment">// Puis à la fin de la performance audio </span>
     myeffect-&gt;Release(); <span class="hljs-comment">// Pour appeler le destructeur </span>
 </div></code></pre>
+<p><a href="https://learn.microsoft.com/en-us/windows/win32/xaudio2/how-to--create-an-effect-chain">Un exemple microsoft</a></p>
 <h3 id="custom-effet-xapo-xaudio2-processing-object">Custom effet : XAPO Xaudio2 Processing Object</h3>
 <p><a href="https://learn.microsoft.com/en-us/windows/win32/xaudio2/xapo-overview">XAPO</a>
 <a href="https://github.com/MicrosoftDocs/win32/blob/docs/desktop-src/xaudio2/how-to--create-an-xapo.md">Doc Git</a></p>
@@ -750,6 +751,27 @@ La effect chain est ensuite passée à une voix.</p>
 };
 
 </div></code></pre>
+<p>L'instanciation de l'effet est similaire aux effets natifs, sauf la construction :</p>
+<pre class="hljs"><code><div>IXAPO* effect = <span class="hljs-keyword">new</span> echo();
+
+XAUDIO2_EFFECT_DESCRIPTOR descriptor;
+descriptor.InitialState = <span class="hljs-literal">true</span>;
+descriptor.OutputChannels = <span class="hljs-number">2</span>;
+descriptor.pEffect = myeffect;
+
+XAUDIO2_EFFECT_CHAIN chain;
+chain.EffectCount = <span class="hljs-number">1</span>;
+chain.pEffectDescriptors = &amp;descriptor;
+</div></code></pre>
+<h2 id="lespace-x3daudio">L'espace : X3DAudio</h2>
+<p>Utilisé en combinaison avec XAudio2, X3DAudio permet de créer de la spatialisation.
+Il utilise les concepts suivants :</p>
+<ul>
+<li>Emetteur : un point dans l'espace produisant du son</li>
+<li>Ecouteur : Position à laquelle le son est entendu</li>
+</ul>
+<p><a href="https://learn.microsoft.com/en-us/windows/win32/xaudio2/x3daudio-overview">X3DAudio</a>
+<a href="https://learn.microsoft.com/en-us/windows/win32/xaudio2/how-to--integrate-x3daudio-with-xaudio2">Guide</a></p>
 <h1 id="exercice">Exercice :</h1>
 <p>Réaliser un player de fichiers WAVE (parsés par vos soins) en ligne de commande :</p>
 <ol>

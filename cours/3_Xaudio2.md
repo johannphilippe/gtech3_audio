@@ -412,6 +412,29 @@ public:
 ``` 
 
 
+L'instanciation de l'effet est similaire aux effets natifs, sauf la construction : 
+``` cpp
+IXAPO* effect = new echo();
+
+XAUDIO2_EFFECT_DESCRIPTOR descriptor;
+descriptor.InitialState = true;
+descriptor.OutputChannels = 2;
+descriptor.pEffect = myeffect;
+
+XAUDIO2_EFFECT_CHAIN chain;
+chain.EffectCount = 1;
+chain.pEffectDescriptors = &descriptor;
+```
+
+## L'espace : X3DAudio 
+
+Utilisé en combinaison avec XAudio2, X3DAudio permet de créer de la spatialisation. 
+Il utilise les concepts suivants : 
+- Emetteur : un point dans l'espace produisant du son 
+- Ecouteur : Position à laquelle le son est entendu 
+
+[X3DAudio](https://learn.microsoft.com/en-us/windows/win32/xaudio2/x3daudio-overview)
+[Guide](https://learn.microsoft.com/en-us/windows/win32/xaudio2/how-to--integrate-x3daudio-with-xaudio2)
 
 # Exercice : 
 
